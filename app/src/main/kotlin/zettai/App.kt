@@ -15,6 +15,7 @@ import org.http4k.server.asServer
 import org.http4k.server.Jetty
 import org.http4k.routing.routes
 import org.http4k.routing.bind
+import org.http4k.routing.path
 
 class App {
     val greeting: String
@@ -28,15 +29,23 @@ val htmlPage = """
 """
 
 val app: HttpHandler = routes(
-    "/greetings" bind GET to ::greetings,
-    "/post" bind POST to ::receiveData
+    "/todo/{user}/{list}" bind GET to ::showList
 )
 
-fun greetings(_req: Request): Response = 
-  Response(OK).body(htmlPage)
+private fun showList(req: Request): Response {
+    val user: String? = req.path("user")
+    val list: String? = req.path("list")
+    val htmlPage = """
+    <html>
+      <body>
+        <h1>Zettai</h1>
+        <p>Here is the list <b>$list</b> of user <b>$user</b></p>
+      </body>
+    </html>
+    """
 
-fun receiveData(req: Request): Response = Response(CREATED)
-  .body("Received ${req.bodyString()}")
+    return Response(OK).body(htmlPage)
+}
 
 fun main() {
     app.asServer(Jetty(8080)).start()
