@@ -7,12 +7,13 @@ import kotlin.test.Test
 import kotlin.test.assertNotNull
 
 class AdditionTest {
-    @Test fun `add two numbers`() {
+    @Test
+    fun `add two numbers`() {
         expectThat(5 + 6).isEqualTo(11)
         expectThat(7 + 42).isEqualTo(49)
     }
 
-    fun randomNatural() = java.util.Random().nextInt(1, 100_000_000)
+    fun randomNatural() = java.util.Random().nextInt(100_000_000 - 1) + 1
 
     @Test
     fun `zero identity`() {
